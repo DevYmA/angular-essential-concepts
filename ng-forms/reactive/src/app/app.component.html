@@ -1,0 +1,66 @@
+
+  <div class="container-fluid p-5">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" >
+    <div class="form-group">
+      <label for="fullName">Full Name</label>
+      <input
+      type="text"
+      class="form-control"
+      id="fullName"
+      placeholder="Full Name"
+      formControlName="fullName">
+
+      <span *ngIf="userForm.get('fullName').errors && userForm.get('fullName').errors['required']" >Requiered Field</span>
+      <span *ngIf="userForm.get('fullName').errors && userForm.get('fullName').errors['nameIsForbidden']" >Your entered name is forbidden</span>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+       type="email"
+       class="form-control"
+       id="email"
+       placeholder="Enter email"
+       formControlName="email">
+      <p *ngIf="!userForm.get('email').valid && userForm.get('email').touched"
+      >We'll never share your email with anyone else.</p>
+    </div>
+
+    <div class="form-check" *ngFor="let gender of genders" >
+      <input class="form-check-input" type="radio"
+      name="gender" id="gender" [value]="gender"
+      formControlName="gender">
+      <label class="form-check-label" for="gender">
+        {{gender}}
+      </label>
+    </div>
+
+    <div formGroupName="education">
+      <div class="form-group">
+        <label for="primaryEducation">Education</label>
+        <input
+         type="text"
+         class="form-control"
+         id="primaryEducation"
+         placeholder="Enter Primary Education"
+         formControlName="primary">
+        <p *ngIf="!userForm.get('education.primary').valid && userForm.get('education.primary').touched"
+        >We'll never share your email with anyone else.</p>
+      </div>
+    </div>
+
+    <div formArrayName="hobbies">
+      <label>Your Hobbies</label>
+      <button class="btn btn-primary" (click)="onAddHobby()">Add Hobby</button>
+
+      <div class="form-group" *ngFor="let hobby of getFormArrayControls(); let i = index" >
+          <input type="text"
+          class="form-control"
+          [formControlName]="i">
+      </div>
+
+    </div>
+
+    <button [disabled]="!userForm.valid" type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  </div>
